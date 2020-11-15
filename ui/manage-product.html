@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title> GSMS </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="csrf-token" content="kmapods5wQ5L1hn7rcR9OPst7EsN0gC7SrHh3m9K"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,300,600,700">
+    <link media="all" type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="css/style.css?v=1.0">
+    <link media="all" type="text/css" rel="stylesheet" href="css/sidebar-menu.css?v=1.0">
+    <link media="all" type="text/css" rel="stylesheet" href="css/custom.css?v=1.3.3">
+</head>
+<body class="tooltips">
+<div class="container">
+
+    <div class="header content rows-content-header">
+        <button class="button-menu-mobile show-sidebar">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="navbar navbar-default" role="navigation">
+            <div class="container">
+
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav visible-lg visible-md limit-chars">
+                        <ul class="breadcrumb">
+                            <a href="index.html">
+                                <i class="zmdi zmdi-view-dashboard zmdi-hc-fw" title="Orders"></i>
+                            </a>
+                            <a href="manage-product.html">
+                                <i class="zmdi zmdi-assignment zmdi-hc-fw" title="Products"></i>
+                            </a>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right content-page">
+        <div class="body content rows scroll-y">
+            <div class="box-info full" id="taskFormContainer">
+                <h2>Manage Products</h2>
+                <div class="panel-body pt-0">
+                    <div class="row mb-4">
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="modal" data-target="#productModal">
+                                Add New Product
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <th>Name</th>
+                        <th>Unit</th>
+                        <th>Price Per Unit</th>
+                        <th style="width: 150px">Action</th>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade-scale" id="productModal" role="dialog" data-backdrop="static">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Product</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <input type="hidden" name="id" id="id" value="0">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label >Name</label>
+                                    <input class="form-control" placeholder="Name" name="name" id="name" type="text" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label >Unit</label>
+                                    <select name="uoms" id="uoms" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label >Price Per Unit</label>
+                                    <input class="form-control" placeholder="Price Per Unit" name="price" id="price" type="text" value="">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveProduct">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/packages/jquery.min.js"></script>
+<script src="js/custom/common.js"></script>
+<script src="js/custom/manage-product.js"></script>
+<script src="js/packages/bootstrap.min.js"></script>
+</body>
+</html>
