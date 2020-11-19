@@ -17,16 +17,6 @@ var productModal = $("#productModal");
         });
     });
 
-    $(document).on("click", ".edit-product", function (){
-        var tr = $(this).closest('tr');
-        $("#id").val(tr.data('id'));
-        $("#name").val(tr.data('name'));
-        $("#unit").val(tr.data('unit'));
-        $("#price").val(tr.data('price'));
-        productModal.find('.modal-title').text('Edit Product');
-        productModal.modal('show');
-    });
-
     // Save Product
     $("#saveProduct").on("click", function () {
         // If we found id value in form then update product detail
