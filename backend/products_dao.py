@@ -1,4 +1,4 @@
-from sql_connection import get_sql_connection_cursor
+from sql_connection import get_sql_connection
 
 def get_all_products(connection):
     cursor = connection.cursor()
@@ -35,9 +35,8 @@ def delete_product(connection, product_id):
 
     return cursor.lastrowid
 
-
 if __name__ == '__main__':
-    connection = get_sql_connection_cursor()
+    connection = get_sql_connection()
     # print(get_all_products(connection))
     print(insert_new_product(connection, {
         'product_name': 'potatoes',
