@@ -2665,7 +2665,7 @@ button.close:focus {
 }
 
 *, .header.sidebar .logo h1, body, h1, h2, h3, h4, h5, h6 {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: Georgia, serif,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     outline: none !important;
 }
 
@@ -2753,6 +2753,7 @@ input:focus, textarea:focus {
     width: 100%;
     max-width: 100%;
     margin-bottom: 21px
+    
 }
 
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {

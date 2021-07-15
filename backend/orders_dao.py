@@ -1,12 +1,13 @@
 from datetime import datetime
 from sql_connection import get_sql_connection
 
+
 def insert_order(connection, order):
     cursor = connection.cursor()
 
     order_query = ("INSERT INTO orders "
-             "(customer_name, total, datetime)"
-             "VALUES (%s, %s, %s)")
+                   "(customer_name, total, datetime)"
+                   "VALUES (%s, %s, %s)")
     order_data = (order['customer_name'], order['grand_total'], datetime.now())
 
     cursor.execute(order_query, order_data)
@@ -29,6 +30,7 @@ def insert_order(connection, order):
     connection.commit()
 
     return order_id
+
 
 def get_order_details(connection, order_id):
     cursor = connection.cursor()
@@ -57,6 +59,7 @@ def get_order_details(connection, order_id):
 
     return records
 
+
 def get_all_orders(connection):
     cursor = connection.cursor()
     query = ("SELECT * FROM orders")
@@ -74,9 +77,11 @@ def get_all_orders(connection):
 
     # append order details in each order
     for record in response:
-        record['order_details'] = get_order_details(connection, record['order_id'])
+        record['order_details'] = get_order_details(
+            connection, record['order_id'])
 
     return response
+
 
 if __name__ == '__main__':
     connection = get_sql_connection()
