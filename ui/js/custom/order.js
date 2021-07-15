@@ -4,10 +4,10 @@ $(function () {
     //Json data by api call for order table
     $.get(productListApiUrl, function (response) {
         productPrices = {}
-        if(response) {
+        if (response) {
             var options = '<option value="">--Select--</option>';
-            $.each(response, function(index, product) {
-                options += '<option value="'+ product.product_id +'">'+ product.name +'</option>';
+            $.each(response, function (index, product) {
+                options += '<option value="' + product.product_id + '">' + product.name + '</option>';
                 productPrices[product.product_id] = product.price_per_unit;
             });
             $(".product-box").find("select").empty().html(options);
@@ -24,12 +24,12 @@ $("#addMoreButton").click(function () {
     $(".product-box-extra .product-total").last().text('0.0');
 });
 
-$(document).on("click", ".remove-row", function (){
+$(document).on("click", ".remove-row", function () {
     $(this).closest('.row').remove();
     calculateValue();
 });
 
-$(document).on("change", ".cart-product", function (){
+$(document).on("change", ".cart-product", function () {
     var product_id = $(this).val();
     var price = productPrices[product_id];
 
@@ -37,23 +37,24 @@ $(document).on("change", ".cart-product", function (){
     calculateValue();
 });
 
-$(document).on("change", ".product-qty", function (e){
+$(document).on("change", ".product-qty", function (e) {
     calculateValue();
 });
 
-$("#saveOrder").on("click", function(){
+$("#saveOrder").on("click", function () {
     var formData = $("form").serializeArray();
+    console.log(formData);
     var requestPayload = {
         customer_name: null,
         total: null,
         order_details: []
     };
     var orderDetails = [];
-    for(var i=0;i<formData.length;++i) {
+    for (var i = 0; i < formData.length; ++i) {
         var element = formData[i];
         var lastElement = null;
 
-        switch(element.name) {
+        switch (element.name) {
             case 'customerName':
                 requestPayload.customer_name = element.value;
                 break;
@@ -65,14 +66,14 @@ $("#saveOrder").on("click", function(){
                     product_id: element.value,
                     quantity: null,
                     total_price: null
-                });                
+                });
                 break;
             case 'qty':
-                lastElement = requestPayload.order_details[requestPayload.order_details.length-1];
+                lastElement = requestPayload.order_details[requestPayload.order_details.length - 1];
                 lastElement.quantity = element.value
                 break;
             case 'item_total':
-                lastElement = requestPayload.order_details[requestPayload.order_details.length-1];
+                lastElement = requestPayload.order_details[requestPayload.order_details.length - 1];
                 lastElement.total_price = element.value
                 break;
         }
