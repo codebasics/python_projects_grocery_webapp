@@ -45,3 +45,6 @@ def get_order_details():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+if __name__ == "__main__":
+    print("Starting Python Flask Server For Grocery Store Management System")
+    app.run(port=5000)
