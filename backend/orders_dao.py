@@ -36,7 +36,7 @@ def get_order_details(connection, order_id):
     query = "SELECT * from order_details where order_id = %s"
 
     query = "SELECT order_details.order_id, order_details.quantity, order_details.total_price, "\
-            "products.name, products.price_per_unit FROM order_details LEFT JOIN products on " \
+            "products.product_name, products.price_per_unit FROM order_details LEFT JOIN products on " \
             "order_details.product_id = products.product_id where order_details.order_id = %s"
 
     data = (order_id, )
