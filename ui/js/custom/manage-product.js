@@ -1,76 +1,101 @@
 var productModal = $("#productModal");
-    $(function () {
 
-        //JSON data by API call
-        $.get(productListApiUrl, function (response) {
-            if(response) {
-                var table = '';
-                $.each(response, function(index, product) {
-                    table += '<tr data-id="'+ product.product_id +'" data-name="'+ product.name +'" data-unit="'+ product.uom_id +'" data-price="'+ product.price_per_unit +'">' +
-                        '<td>'+ product.name +'</td>'+
-                        '<td>'+ product.uom_name +'</td>'+
-                        '<td>'+ product.price_per_unit +'</td>'+
-                        '<td><span class="btn btn-xs btn-danger delete-product">Delete</span></td></tr>';
-                });
-                $("table").find('tbody').empty().html(table);
-            }
+$(function () {
+    $.get(productListApiUrl, function (products) {
+        var tableBody = $("table").find("tbody").empty();
+
+        $.each(products, function (index, product) {
+            var row = $("<tr>").data({
+                id: product.product_id,
+                name: product.name,
+                unit: product.uom_id,
+                price: product.price_per_unit
+            });
+
+            row.append($("<td>").text(product.name));
+            row.append($("<td>").text(product.uom_name));
+            row.append($("<td>").text(product.price_per_unit));
+
+            var editButton = $("<button>", {
+                type: "button",
+                class: "btn btn-xs btn-primary edit-product",
+                text: "Edit"
+            });
+            var deleteButton = $("<span>", {
+                class: "btn btn-xs btn-danger delete-product",
+                text: "Delete"
+            });
+
+            row.append($("<td>").append(editButton, " ", deleteButton));
+            tableBody.append(row);
         });
     });
+});
 
-    // Save Product
-    $("#saveProduct").on("click", function () {
-        // If we found id value in form then update product detail
-        var data = $("#productForm").serializeArray();
-        var requestPayload = {
-            product_name: null,
-            uom_id: null,
-            price_per_unit: null
-        };
-        for (var i=0;i<data.length;++i) {
-            var element = data[i];
-            switch(element.name) {
-                case 'name':
-                    requestPayload.product_name = element.value;
-                    break;
-                case 'uoms':
-                    requestPayload.uom_id = element.value;
-                    break;
-                case 'price':
-                    requestPayload.price_per_unit = element.value;
-                    break;
-            }
-        }
-        callApi("POST", productSaveApiUrl, {
-            'data': JSON.stringify(requestPayload)
+$("#saveProduct").on("click", function () {
+    var productId = Number($("#id").val());
+    var requestPayload = {
+        product_name: $("#name").val(),
+        uom_id: $("#uoms").val(),
+        price_per_unit: $("#price").val()
+    };
+
+    var apiUrl = productSaveApiUrl;
+
+    if (productId > 0) {
+        requestPayload.product_id = productId;
+        apiUrl = productUpdateApiUrl;
+    }
+
+    callApi("POST", apiUrl, {
+        data: JSON.stringify(requestPayload)
+    });
+});
+
+$(document).on("click", ".edit-product", function () {
+    var product = $(this).closest("tr").data();
+
+    $("#id").val(product.id);
+    $("#name").val(product.name);
+    $("#price").val(product.price);
+    productModal.data("selectedUnit", product.unit);
+
+    productModal.find(".modal-title").text("Edit Product");
+    $("#saveProduct").prop("disabled", true);
+    productModal.modal("show");
+});
+
+$(document).on("click", ".delete-product", function () {
+    var row = $(this).closest("tr");
+
+    if (confirm("Are you sure to delete " + row.data("name") + " item?")) {
+        callApi("POST", productDeleteApiUrl, {
+            product_id: row.data("id")
         });
-    });
+    }
+});
 
-    $(document).on("click", ".delete-product", function (){
-        var tr = $(this).closest('tr');
-        var data = {
-            product_id : tr.data('id')
-        };
-        var isDelete = confirm("Are you sure to delete "+ tr.data('name') +" item?");
-        if (isDelete) {
-            callApi("POST", productDeleteApiUrl, data);
-        }
-    });
+productModal.on("hide.bs.modal", function () {
+    $("#id").val("0");
+    $("#name, #uoms, #price").val("");
+    $("#saveProduct").prop("disabled", false);
+    productModal.removeData("selectedUnit");
+    productModal.find(".modal-title").text("Add New Product");
+});
 
-    productModal.on('hide.bs.modal', function(){
-        $("#id").val('0');
-        $("#name, #unit, #price").val('');
-        productModal.find('.modal-title').text('Add New Product');
-    });
+productModal.on("show.bs.modal", function () {
+    var unitDropdown = $("#uoms").empty();
+    unitDropdown.append($("<option>").val("").text("--Select--"));
 
-    productModal.on('show.bs.modal', function(){
-        //JSON data by API call
-        $.get(uomListApiUrl, function (response) {
-            if(response) {
-                var options = '<option value="">--Select--</option>';
-                $.each(response, function(index, uom) {
-                    options += '<option value="'+ uom.uom_id +'">'+ uom.uom_name +'</option>';
-                });
-                $("#uoms").empty().html(options);
-            }
+    $.get(uomListApiUrl, function (units) {
+        $.each(units, function (index, unit) {
+            unitDropdown.append(
+                $("<option>").val(unit.uom_id).text(unit.uom_name)
+            );
         });
+
+        var selectedUnit = productModal.data("selectedUnit");
+        unitDropdown.val(selectedUnit || "");
+        $("#saveProduct").prop("disabled", false);
     });
+});

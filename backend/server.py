@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 connection = get_sql_connection()
 
+
 @app.route('/getUOM', methods=['GET'])
 def get_uom():
     response = uom_dao.get_uoms(connection)
@@ -18,12 +19,14 @@ def get_uom():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+
 @app.route('/getProducts', methods=['GET'])
 def get_products():
     response = products_dao.get_all_products(connection)
     response = jsonify(response)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
 
 @app.route('/insertProduct', methods=['POST'])
 def insert_product():
@@ -35,12 +38,25 @@ def insert_product():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+
+@app.route('/updateProduct', methods=['POST'])
+def update_product():
+    request_payload = json.loads(request.form['data'])
+    products_dao.update_product(connection, request_payload)
+    response = jsonify({
+        'product_id': request_payload['product_id']
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
 @app.route('/getAllOrders', methods=['GET'])
 def get_all_orders():
     response = orders_dao.get_all_orders(connection)
     response = jsonify(response)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
 
 @app.route('/insertOrder', methods=['POST'])
 def insert_order():
@@ -52,6 +68,7 @@ def insert_order():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+
 @app.route('/deleteProduct', methods=['POST'])
 def delete_product():
     return_id = products_dao.delete_product(connection, request.form['product_id'])
@@ -61,7 +78,7 @@ def delete_product():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+
 if __name__ == "__main__":
     print("Starting Python Flask Server For Grocery Store Management System")
     app.run(port=5000)
-
